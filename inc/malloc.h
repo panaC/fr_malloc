@@ -6,14 +6,42 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 21:40:22 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/21 14:03:11 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/21 19:32:17 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MALLOC_H
 # define MALLOC_H
-#include <stdlib.h>
+# include <stdlib.h>
 
-void		*malloc2(size_t size);
+# define TINY_SIZE 		0
+# define SMALL_SIZE		0
+
+typedef enum		e_size {
+	TINY = 0,
+	SMALL,
+}					t_e_size;
+
+typedef struct		s_alloc {
+	struct s_alloc	*next;
+	size_t			length;
+}					t_alloc;
+
+typedef struct		s_page {
+	struct s_page	*next;
+	size_t			length;
+	t_alloc			*alloc;
+}					t_page;
+
+typedef struct		s_mem {
+	t_page			*tiny;
+	t_page			*small;
+	t_alloc			*large;
+}					t_mem;
+
+extern t_mem		*g_mem;
+
+void		*ft_malloc(size_t size);
+void		ft_free(void *ptr);
 
 #endif

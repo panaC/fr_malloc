@@ -6,7 +6,7 @@
 #    By: pierre <pleroux@student.42.fr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/11 13:59:37 by pierre            #+#    #+#              #
-#    Updated: 2019/07/21 14:14:43 by pleroux          ###   ########.fr        #
+#    Updated: 2019/07/21 16:39:51 by pleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ TEST = main.test.c
 INC_FILE = malloc.h \
 
 SRC_FILE = malloc.c \
+			free.c
 
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILE))
 INC = $(addprefix $(INC_DIR), $(INC_FILE))
@@ -62,20 +63,22 @@ $(NAME)	: $(OBJ)
 	ln -s -f $(NAME) $(NAME_LN)
 
 clean	:
-	rm -f $(NAME_LN)
-	rm -f $(NAME)
 	rm -f $(OBJ)
-	make -C $(LIB_PATH) fclean
-	make -C $(LIB_PRINTF_PATH) fclean
+	make -C $(LIB_PATH) clean
+	make -C $(LIB_PRINTF_PATH) clean
 
 fclean	: clean
 	rm -f $(NAME_LN)
 	rm -f $(NAME)
+	make -C $(LIB_PATH) fclean
+	make -C $(LIB_PRINTF_PATH) fclean
 
-re		: clean all
+re		: fclean all
 
-test	: all
-	$(CC) $(LIB_FLAGS) $(INCL) $(TEST_PATH)$(TEST) -o $(TEST_PATH)test
-	./run.sh test/test
+test	: $(NAME)
+	$(CC) $(LIB_FLAGS) $(INCL) $(TEST_PATH)$(TEST) -L. -lft_malloc -o $(TEST_PATH)test
+	$(CC) $(LIB_FLAGS) $(INCL) $(TEST_PATH)test0.c -o $(TEST_PATH)test0
+	./run.sh time -l test/test0
+	./run.sh time -l test/test
 
 .PHONY	: all clean re fclean test $(LIB) $(LIB_PRINTF)

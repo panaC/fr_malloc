@@ -7,7 +7,7 @@
 .*.swo
 
 #test
-test/test
+test/test*
 
 # Prerequisites
 *.d
