@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 19:14:44 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/21 19:53:44 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/21 20:54:30 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void		*ft_malloc(size_t size)
 {
 	t_alloc		*ret = NULL;
 
-	if (size < TINY_SIZE) {
+	if (size < getpagesize() / MIN_ALLOC) {
 		
 	}
-	else if (size < SMALL_SIZE)
+	else if (size < MUL_ALLOC * getpagesize() / MIN_ALLOC)
 	{
 
 	}
