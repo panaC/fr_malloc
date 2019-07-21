@@ -5,12 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/20 19:18:53 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/20 19:24:34 by pleroux          ###   ########.fr       */
+/*   Created: 2019/07/20 21:40:22 by pleroux           #+#    #+#             */
+/*   Updated: 2019/07/21 14:03:11 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef MALLOC_H
+# define MALLOC_H
 #include <stdlib.h>
 
-void		*malloc(size_t size);
+void		*malloc2(size_t size);
 
+#endif

@@ -1,4 +1,13 @@
+#finder
+.DS_Store
+
+#vim
 .*~
+.*.swp
+.*.swo
+
+#test
+test/test
 
 # Prerequisites
 *.d

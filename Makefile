@@ -6,7 +6,7 @@
 #    By: pierre <pleroux@student.42.fr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/11 13:59:37 by pierre            #+#    #+#              #
-#    Updated: 2019/07/20 21:14:13 by pleroux          ###   ########.fr        #
+#    Updated: 2019/07/21 14:14:43 by pleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,13 @@ LIB_HEADER = libft/includes
 LIB_LINK = ft
 SRC_DIR = src/
 INC_DIR = inc/
-CFLAGS = -Wall -Werror -Wextra -I $(LIB_HEADER) -I $(LIB_PRINTF_HEADER) -I $(INC_DIR)
-LIB_FLAGS = -lncurses -L$(LIB_PRINTF_PATH) -l$(LIB_PRINTF_LINK) -L$(LIB_PATH) -l$(LIB_LINK)
+CFLAGS = -Wall -Werror -Wextra -g
+INCL = -I $(LIB_HEADER) -I $(LIB_PRINTF_HEADER) -I $(INC_DIR)
+LD_FLAGS = -shared
+LIB_FLAGS = -L$(LIB_PRINTF_PATH) -l$(LIB_PRINTF_LINK) -L$(LIB_PATH) -l$(LIB_LINK)
+
+TEST_PATH = test/
+TEST = main.test.c
 			
 INC_FILE = malloc.h \
 
@@ -50,10 +55,10 @@ $(LIB_PRINTF)	:
 	make -C $(LIB_PRINTF_PATH)
 
 %.o: %.c $(INC)
-	     $(CC) $(CFLAGS) -o $@ -c $<
+	     $(CC) $(CFLAGS) $(INCL) -o $@ -c $<
 
 $(NAME)	: $(OBJ)
-	$(CC) -shared -o $(NAME) $(CFLAGS) $(OBJ) $(LIB_FLAGS)
+	$(CC) $(LD_FLAGS) $(LIB_FLAGS) $(INCL) -o $(NAME) $(OBJ)
 	ln -s -f $(NAME) $(NAME_LN)
 
 clean	:
@@ -69,4 +74,8 @@ fclean	: clean
 
 re		: clean all
 
-.PHONY	: all clean re fclean $(LIB) $(LIB_PRINTF)
+test	: all
+	$(CC) $(LIB_FLAGS) $(INCL) $(TEST_PATH)$(TEST) -o $(TEST_PATH)test
+	./run.sh test/test
+
+.PHONY	: all clean re fclean test $(LIB) $(LIB_PRINTF)
