@@ -1,2 +1,2 @@
-# fr_malloc
+# ft_malloc
 personal malloc implementation
