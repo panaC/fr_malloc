@@ -1,46 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   linked.c                                           :+:      :+:    :+:   */
+/*   realloc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/21 18:53:52 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/23 20:31:34 by pleroux          ###   ########.fr       */
+/*   Created: 2019/07/23 20:26:11 by pleroux           #+#    #+#             */
+/*   Updated: 2019/07/23 20:46:33 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "malloc.h"
 
-t_alloc			*push_back_alloc(t_alloc **list, t_alloc *elem)
+void			*ft_realloc(void *ptr, size_t size)
 {
-	t_alloc		*ret;
+	t_alloc		*arg;
+	char		*new;
+	size_t		length;
 
-	if (*list == NULL) {
-		*list = elem;
-		return;
+	arg = (t_alloc*)((t_alloc)ptr - 1);
+	if (arg->length >= size)
+	{
+		return (arg);
 	}
-	ret = *list;
-	while (ret->next) {
-		ret = ret->next;
+	length = arg->length;
+	arg->length = 0;
+	new = (char*)malloc_tiny_small(size, (t_zone*)ptr->zone, ptr->e_size);
+	if (ptr != new && new != NULL)
+	{
+		ft_memcpy(new, ptr, length);
 	}
-	ret->next = elem;
-	return (ret);
-}
-
-t_zone			*push_back_zone(t_zone **list, t_zone *elem)
-{
-	t_zone		*ret;
-
-	if (*list == NULL) {
-		*list = elem;
-		return;
-	}
-	ret = *list;
-	while (ret->next) {
-		ret = ret->next;
-	}
-	ret->next = elem;
-	return (ret);
+	return ((void*)new);
 }
