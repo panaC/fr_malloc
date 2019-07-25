@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 21:40:22 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/25 13:06:57 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/25 14:37:55 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 typedef enum		e_size {
 	TINY = 0,
 	SMALL,
+	LARGE
 }					t_e_size;
 
 typedef struct		s_alloc {
@@ -39,7 +40,7 @@ typedef struct		s_zone {
 typedef struct		s_mem {
 	t_zone			*tiny;
 	t_zone			*small;
-	t_alloc			*large;
+	t_zone			*large;
 }					t_mem;
 
 extern t_mem		*g_mem;

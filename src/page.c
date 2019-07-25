@@ -6,22 +6,24 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 19:25:01 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/25 14:04:10 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/25 14:41:22 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "malloc.h"
 
-t_zone			*new_zone(t_e_size enum_size)
+t_zone			*new_zone(t_e_size enum_size, size_t size)
 {
 	t_zone		*ret;
-	size_t		size;
 
-	size = MUL_ALLOC * (size_t)getpagesize();
 	if (enum_size == TINY)
 	{
 		size = (size_t)getpagesize();
+	}
+	else if (enum_size = SMALL)
+	{
+		size = MUL_ALLOC * (size_t)getpagesize();
 	}
 	ret = (t_zone*)mmap(NULL, size, PROT_WRITE | PROT_READ, \
 			MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
