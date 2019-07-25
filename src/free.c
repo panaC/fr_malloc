@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 15:09:38 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/25 17:40:56 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/25 19:03:04 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int				find_and_delete_alloc(t_alloc *l, t_alloc *find, int *total)
 			if (previous != NULL)
 			{
 				previous->next = l->next;
-				ft_bzero((void*)find, (void*)(find + 1) + find->length);
+				ft_bzero((void*)find, sizeof(t_alloc) + find->length);
 				delete = TRUE;
 			}
 		}
@@ -46,8 +46,8 @@ int				find_and_delete_alloc(t_alloc *l, t_alloc *find, int *total)
 
 void			delete_zone(t_zone **head, t_zone *zone)
 {
-	t_list		*l;
-	t_list		*previous;
+	t_zone		*l;
+	t_zone		*previous;
 
 	if (!head && !*head)
 		return ;
@@ -61,10 +61,10 @@ void			delete_zone(t_zone **head, t_zone *zone)
 				previous->next = l->next;
 			else
 				*head = l->next;
-			if (munmap((void*)l, t->length + sizeof(t_zone)) < 0)
+			if (munmap((void*)l, l->length + sizeof(t_zone)) < 0)
 			{
 				ft_printf("ERROR to free %d bytes of memory\n",
-						t->length + sizeof(t_zone));
+						l->length + sizeof(t_zone));
 			}
 			return ;
 		}
@@ -73,15 +73,16 @@ void			delete_zone(t_zone **head, t_zone *zone)
 	}
 }
 
-int				find_and_delete_zone(t_zone **head_zone, \
-		t_zone *zone, t_alloc *find)
+int				find_and_delete_zone(t_zone **head_zone, t_alloc *find)
 {
 	int			total;
+	t_zone		*zone;
 
+	zone = *head_zone;
 	while (zone)
 	{
 		total = 0;
-		if (find_and_delete_alloc(zone, find, &total))
+		if (find_and_delete_alloc((t_alloc*)(zone + 1), find, &total))
 		{
 			if (total == 0)
 				delete_zone(head_zone, zone);
@@ -99,10 +100,10 @@ void			ft_free(void *ptr)
 	if (ptr != NULL)
 	{
 		find = (t_alloc*)(ptr + sizeof(t_alloc));
-		if (find_and_delete_zone((t_alloc*)(g_mem->large + 1), find))
+		if (find_and_delete_zone(&g_mem.large, find))
 			return ;
-		else if (find_and_delete_zone((t_alloc*)(g_mem->small + 1), find))
+		else if (find_and_delete_zone(&g_mem.small, find))
 			return ;
-		find_and_delete_zone((t_alloc*)(g_mem->tiny + 1), find);
+		find_and_delete_zone(&g_mem.tiny, find);
 	}
 }
