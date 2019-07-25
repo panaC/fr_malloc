@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 15:09:38 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/25 19:03:04 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/25 20:21:36 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <sys/mman.h>
 #include <ft_printf.h>
 #include <libft.h>
+#include <errno.h>
 #include "malloc.h"
 
 int				find_and_delete_alloc(t_alloc *l, t_alloc *find, int *total)
@@ -104,6 +105,8 @@ void			ft_free(void *ptr)
 			return ;
 		else if (find_and_delete_zone(&g_mem.small, find))
 			return ;
-		find_and_delete_zone(&g_mem.tiny, find);
+		else if (find_and_delete_zone(&g_mem.tiny, find))
+			return ;
+		errno = FREE_ERROR;
 	}
 }

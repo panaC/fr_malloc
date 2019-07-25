@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 21:40:22 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/25 19:12:38 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/25 20:21:20 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define MUL_ALLOC						8
 # define FALSE							0
 # define TRUE							1
+# define FREE_ERROR						7777
 
 typedef enum							e_size {
 	TINY = 0,
