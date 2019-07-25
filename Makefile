@@ -6,7 +6,7 @@
 #    By: pierre <pleroux@student.42.fr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/11 13:59:37 by pierre            #+#    #+#              #
-#    Updated: 2019/07/21 16:39:51 by pleroux          ###   ########.fr        #
+#    Updated: 2019/07/25 11:34:46 by pleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,10 @@ TEST = main.test.c
 INC_FILE = malloc.h \
 
 SRC_FILE = malloc.c \
-			free.c
+			free.c \
+			linked.c \
+			page.c \
+			realloc.c \
 
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILE))
 INC = $(addprefix $(INC_DIR), $(INC_FILE))

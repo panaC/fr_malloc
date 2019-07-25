@@ -6,22 +6,18 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 18:53:52 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/23 20:31:34 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/25 13:59:43 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "malloc.h"
 
-t_alloc			*push_back_alloc(t_alloc **list, t_alloc *elem)
+t_alloc			*push_back_alloc(t_alloc *list, t_alloc *elem)
 {
 	t_alloc		*ret;
 
-	if (*list == NULL) {
-		*list = elem;
-		return;
-	}
-	ret = *list;
+	ret = list;
 	while (ret->next) {
 		ret = ret->next;
 	}

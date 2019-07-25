@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 19:25:01 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/23 20:38:01 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/25 14:04:10 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,38 +30,35 @@ t_zone			*new_zone(t_e_size enum_size)
 		ft_printf("ERROR to allocate %s page(s)\n", size / getpagesize());
 		return (NULL);
 	}
+	ft_bzero((void*)ret, size);
 	return (ret);
 }
 
-t_alloc			*get_set_alloc_zone(t_zone *zone, size_t length, t_e_size e)
+t_alloc			*get_set_alloc_zone(t_zone *zone, size_t size, t_e_size e)
 {
 	t_alloc		*tmp;
 
 	if (zone)
 	{
-		if (zone->alloc == NULL)
-		{
-			zone->alloc = page + 1;
-		}
-		tmp = zone->alloc;
-		while(tmp)
+		tmp = (t_alloc*)(zone + 1);
+		while(tmp->next)
 		{
 			if (tmp->length == 0 && \
-					((void*)tmp->next - (void*)(tmp + 1)) >= length)
+					((void*)tmp->next - (void*)(tmp + 1)) >= size)
 			{
-					return tmp;
+				return (tmp);
 			}
 			tmp = tmp->next;
 		}
-		if (((void*)zone + page->length - ((void*)(tmp + 1) + tmp->length)) > \
-				length)
+		if (zone->length - \
+				(((void*)(tmp + 1) + tmp->length) - (void*)(zone + 1)) > size)
 		{
-			tmp = (t_alloc*)((void*)(tmp + 1) + tmp->length);
+			tmp->next = (t_alloc*)((void*)(tmp + 1) + tmp->length);
+			tmp = tmp->next;
 			tmp->zone = (void*)zone;
 			tmp->e_size = e;
-			push_back_alloc(&(zone->alloc), tmp);
-			return tmp;
+			return (tmp);
 		}
 	}
-	return NULL;
+	return (NULL);
 }

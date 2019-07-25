@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 21:40:22 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/23 20:49:44 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/25 13:06:57 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define MALLOC_H
 # include <stdlib.h>
 
-# define TINY_SIZE 		0
-# define SMALL_SIZE		0
 # define MIN_ALLOC		100
 # define MUL_ALLOC		8
 # define FALSE			0
@@ -36,7 +34,6 @@ typedef struct		s_alloc {
 typedef struct		s_zone {
 	struct s_zone	*next;
 	size_t			length;
-	t_alloc			*alloc;
 }					t_zone;
 
 typedef struct		s_mem {
