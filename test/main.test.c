@@ -1,6 +1,7 @@
 #include "malloc.h"
 #include <stdio.h>
 
+/*
 void test4() {
 	void *a = ft_malloc(10);
 	void *b = ft_malloc(1024 * 32);
@@ -39,14 +40,15 @@ void test3() {
 	ft_free(e);
 	ft_free(f);
 }
+*/
 
 void test2() {
 	int i = 0;
 	int x = 0;
 	char *addr = NULL;
 
-	while(i < 10) {
-		addr = (char*)ft_malloc(10);
+	while(i < 1000) {
+		addr = (char*)ft_malloc(30);
 		++i;
 		x = 0;
 		while (x < 10) {
@@ -57,6 +59,7 @@ void test2() {
 	}
 }
 
+/*
 void test1() {
 	int i = 0;
 	char x = 0;
@@ -81,18 +84,21 @@ void test1() {
 		ft_putendl("");
 		ft_print_memory(print, 100);
 	// }
-	ft_malloc(100);
 }
+*/
 
+/*
 void test0() {
 	void *a = ft_malloc(10);
 	ft_free(a);
 }
+*/
 
 int main(void) {
 
 	printf("getPageSize %d\n", getpagesize());
 	test2();
+	show_alloc_mem();
 	return 0;
 }
-
+   
