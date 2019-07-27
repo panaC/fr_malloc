@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 18:15:06 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/25 19:13:32 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/27 14:29:18 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void				show_zone(t_zone *zone, t_uint64 *total)
 	alloc = (t_alloc*)(zone + 1);
 	while (alloc)
 	{
-		ft_printf("%x - %x : %d octets\n", \
+		ft_printf("%#018x - %#018x : %d octets\n", \
 				alloc + 1, (void*)(alloc + 1) + alloc->length, alloc->length);
 		*total += alloc->length;
 		alloc = alloc->next;
@@ -35,7 +35,7 @@ void				show_all_zone(t_zone *zone, char *name, t_uint64 *total)
 		return ;
 	while (zone)
 	{
-		ft_printf("%s : %x\n", name, zone);
+		ft_printf("%s : %#018x\n", name, zone);
 		show_zone(zone, total);
 	}
 }

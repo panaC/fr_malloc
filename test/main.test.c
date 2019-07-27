@@ -45,11 +45,11 @@ void test2() {
 	int x = 0;
 	char *addr = NULL;
 
-	while(i < 1024) {
-		addr = (char*)ft_malloc(1024);
+	while(i < 10) {
+		addr = (char*)ft_malloc(10);
 		++i;
 		x = 0;
-		while (x < 1024) {
+		while (x < 10) {
 			addr[x] = 42;
 			++x;
 		}
@@ -59,18 +59,29 @@ void test2() {
 
 void test1() {
 	int i = 0;
-	int x = 0;
+	char x = 0;
 	char *addr = NULL;
+	char *print = NULL;
 
-	while(i < 1024) {
-		addr = (char*)ft_malloc(100);
-		++i;
-		x = 0;
-		while (x < 100) {
-			addr[x] = x;
-			++x;
+	// for (size_t c = 0; c < 100; c++) {
+	//	printf("size %lu\n", c);
+		i = 0;
+		while(i < 20) {
+			addr = (char*)ft_malloc(10);
+			if (!print) {
+				print = addr;
+			}
+			++i;
+			x = 16;
+			while (x < 32) {
+				addr[x - 16] = x;
+				++x;
+			}
 		}
-	}
+		ft_putendl("");
+		ft_print_memory(print, 100);
+	// }
+	ft_malloc(100);
 }
 
 void test0() {
@@ -80,7 +91,8 @@ void test0() {
 
 int main(void) {
 
-	test1();
+	printf("getPageSize %d\n", getpagesize());
+	test2();
 	return 0;
 }
 

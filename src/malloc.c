@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 19:14:44 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/25 21:27:53 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/07/27 18:39:28 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_zone			*new_zone(t_e_size enum_size, size_t size)
 	else if (enum_size == SMALL)
 		size = MUL_ALLOC * (size_t)getpagesize();
 	else
-		size += sizeof(t_zone) + sizeof(t_alloc);
+		size += sizeof(t_zone) + 2 * sizeof(t_alloc);
 	ret = (t_zone*)mmap(NULL, size, PROT_WRITE | PROT_READ, \
 			MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
 	if (ret == MAP_FAILED)
@@ -54,36 +54,42 @@ t_zone			*new_zone(t_e_size enum_size, size_t size)
 		errno = ENOMEM;
 		return (NULL);
 	}
-	ret->length = enum_size == LARGE ? \
-				  size - sizeof(t_zone) - sizeof(t_alloc) : size;
-	ret->next = NULL;
 	ft_bzero((void*)ret, size);
+	ret->length = size - sizeof(t_zone);
+	ret->next = NULL;
 	return (ret);
 }
 
 t_alloc			*get_set_alloc_zone(t_zone *zone, size_t size)
 {
 	t_alloc		*tmp;
-	void		*tmp_end;
+	t_alloc		*tmp_end;
 
 	if (zone)
 	{
-		tmp = (t_alloc*)(zone + 1);
-		tmp_end = (void*)(tmp + 1) + tmp->length;
+		tmp = (t_alloc*)((void*)zone + sizeof(t_zone));
+		tmp_end = (t_alloc*)((void*)tmp + sizeof(t_alloc) + tmp->length);
+
+		// ft_printf("   tmp %#018x : tmp_end %#018x\n", tmp, tmp_end);
 		while (tmp->next)
 		{
-			if ((void*)tmp->next - tmp_end > (long)size)
+			if ((void*)tmp->next - (void*)tmp_end > (long)size)
 			{
-				return ((t_alloc*)tmp_end);
+				tmp_end->length = size;
+				tmp_end->next = tmp->next;
+				tmp->next = tmp_end;
+				return (tmp_end);
 			}
 			tmp = tmp->next;
-			tmp_end = (void*)(tmp + 1) + tmp->length;
+			tmp_end = (void*)tmp + sizeof(t_alloc) + tmp->length;
 		}
-		if (zone->length - ((tmp_end - (void*)(zone + 1)) > (long)size))
+		if ((void*)zone + sizeof(t_zone) + zone->length - (void*)tmp_end >= \
+				(long)(size + sizeof(t_alloc)))
 		{
-			tmp->next = 0;
-			tmp = tmp_end;
-			return (tmp);
+			tmp_end->length = size;
+			tmp_end->next = 0;
+			tmp->next = tmp_end;
+			return (tmp_end);
 		}
 	}
 	return (NULL);
@@ -97,22 +103,33 @@ void			*malloc_brain(size_t size, t_zone **head, t_e_size e_size)
 	zone = *head;
 	while (((tmp = get_set_alloc_zone(zone, size))) == NULL)
 	{
-		if (((zone = push_back_zone(head, new_zone(e_size, size)))) == NULL)
-			return (NULL);
+		if (zone && zone->next)
+			zone = zone->next;
+		else
+		{
+			zone = push_back_zone(head, new_zone(e_size, size));
+			if (!zone)
+				return (NULL);
+			ft_printf("new page requested for %d enum\n", e_size);
+		}
+		// ft_printf("zone %#018x : length %d : next %#018x\n", zone, zone->length, zone->next);
 	}
-	tmp->length = size;
-	return ((void*)(tmp + 1));
+	ft_printf("new node %#018x : length %d : next %#018x : content %#018x\n", tmp, tmp->length, tmp->next, (void*)tmp + sizeof(t_alloc));
+	return ((void*)tmp + sizeof(t_alloc));
 }
 
 void			*ft_malloc(size_t size)
 {
 	if (size < (size_t)(getpagesize() / MIN_ALLOC))
 	{
+		ft_printf("TINY\n");
 		return (malloc_brain(size, &(g_mem.tiny), TINY));
 	}
 	else if (size < (size_t)(MUL_ALLOC * getpagesize() / MIN_ALLOC))
 	{
-		return (malloc_brain(size, &(g_mem.small), SMALL));
+		ft_printf("SMALL\n");
+	 	return (malloc_brain(size, &(g_mem.small), SMALL));
 	}
+	ft_printf("LARGE ");
 	return (malloc_brain(size, &(g_mem.large), LARGE));
 }
