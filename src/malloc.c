@@ -6,12 +6,10 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 19:14:44 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 23:11:40 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:24:32 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include <stdlib.h>
-// #include <stdio.h>
 #include <sys/mman.h>
 #include <unistd.h>
 #include <errno.h>

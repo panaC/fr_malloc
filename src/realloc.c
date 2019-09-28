@@ -6,12 +6,10 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 20:26:11 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 23:19:16 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:24:55 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
 #include <libft.h>
 #include <errno.h>
 #include "malloc.h"

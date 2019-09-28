@@ -6,7 +6,7 @@
 #    By: pierre <pleroux@student.42.fr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/11 13:59:37 by pierre            #+#    #+#              #
-#    Updated: 2019/09/28 23:23:33 by pleroux          ###   ########.fr        #
+#    Updated: 2019/09/28 23:25:46 by pleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,9 +51,6 @@ all		: $(LIB) $(LIB_PRINTF) $(NAME)
 $(LIB)	:
 	make -C $(LIB_PATH)
 
-$(LIB_PRINTF)	:
-	make -C $(LIB_PRINTF_PATH)
-
 %.o: %.c $(INC)
 	     $(CC) $(CFLAGS) $(INCL) -o $@ -c $<
 
@@ -64,13 +61,11 @@ $(NAME)	: $(OBJ)
 clean	:
 	rm -f $(OBJ)
 	make -C $(LIB_PATH) clean
-	make -C $(LIB_PRINTF_PATH) clean
 
 fclean	: clean
 	rm -f $(NAME_LN)
 	rm -f $(NAME)
 	make -C $(LIB_PATH) fclean
-	make -C $(LIB_PRINTF_PATH) fclean
 
 re		: fclean all
 

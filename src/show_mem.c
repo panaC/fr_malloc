@@ -6,11 +6,10 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 18:15:06 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 23:20:06 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:25:04 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_printf.h>
 #include <libft.h>
 #include "malloc.h"
 
