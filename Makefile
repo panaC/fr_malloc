@@ -6,7 +6,7 @@
 #    By: pierre <pleroux@student.42.fr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/11 13:59:37 by pierre            #+#    #+#              #
-#    Updated: 2019/07/25 18:40:51 by pleroux          ###   ########.fr        #
+#    Updated: 2019/09/28 23:23:33 by pleroux          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,6 @@ DBG2=-ggdb  -fsanitize=address -fsanitize-memory-track-origins
 NAME = libft_malloc_$(HOSTTYPE).so
 NAME_LN = libft_malloc.so
 CC = gcc
-LIB_PRINTF = ft_printf/libftprintf.a
-LIB_PRINTF_PATH = ft_printf/
-LIB_PRINTF_HEADER = ft_printf/inc
-LIB_PRINTF_LINK = ftprintf
 LIB = libft/libft.a
 LIB_PATH = libft/
 LIB_HEADER = libft/includes
@@ -31,9 +27,9 @@ LIB_LINK = ft
 SRC_DIR = src/
 INC_DIR = inc/
 CFLAGS = -Wall -Werror -Wextra -g
-INCL = -I $(LIB_HEADER) -I $(LIB_PRINTF_HEADER) -I $(INC_DIR)
+INCL = -I $(LIB_HEADER) -I $(INC_DIR)
 LD_FLAGS = -shared
-LIB_FLAGS = -L$(LIB_PRINTF_PATH) -l$(LIB_PRINTF_LINK) -L$(LIB_PATH) -l$(LIB_LINK)
+LIB_FLAGS = -L$(LIB_PATH) -l$(LIB_LINK)
 
 TEST_PATH = test/
 TEST = main.test.c

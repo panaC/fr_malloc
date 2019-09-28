@@ -6,13 +6,14 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 21:40:22 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 20:51:40 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:08:41 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MALLOC_H
 # define MALLOC_H
 # include <stdlib.h>
+# include <pthread.h>
 
 /**
  ** https://cocoawithlove.com/2010/05/look-at-how-malloc-works-on-mac.html
@@ -47,6 +48,7 @@ typedef struct							s_mem {
 }										t_mem;
 
 extern t_mem							g_mem;
+extern pthread_mutex_t					g_mutex;
 
 void									*malloc(size_t size);
 void									free(void *ptr);

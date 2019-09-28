@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 19:14:44 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 23:01:56 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:11:40 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include "malloc.h"
 
 t_mem			g_mem = { .tiny = NULL, .small = NULL, .large = NULL};
+
+pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 t_zone			*push_back_zone(t_zone **list, t_zone *elem)
 {
@@ -122,31 +124,33 @@ void			*malloc_brain(size_t size, t_zone **head, t_e_size e_size)
 
 void			*malloc(size_t size)
 {
+	void		*ret;
+
+	pthread_mutex_lock(&g_mutex);
 	/*	ft_putstr("malloc ");
 		ft_putnbr(size);
 		ft_putchar('\n');*/
 	if (size < (size_t)(getpagesize() / MIN_ALLOC))
 	{
-		// printf("TINY\n");
-		void* ret = malloc_brain(size, &(g_mem.tiny), TINY);
+		ret = malloc_brain(size, &(g_mem.tiny), TINY);
 		/*ft_putstr("malloc tiny ");
 		  ft_putnbr((int)ret);
 		  ft_putchar('\n');*/
-		return ret;
 	}
 	else if (size < (size_t)(MUL_ALLOC * getpagesize() / MIN_ALLOC))
 	{
-		void* ret = malloc_brain(size, &(g_mem.small), SMALL);
-		// printf("SMALL\n");
+		ret = malloc_brain(size, &(g_mem.small), SMALL);
 		/*ft_putstr("malloc small ");
 		  ft_putnbr((int)ret);
 		  ft_putchar('\n');*/
-		return ret;
 	}
-	// printf("LARGE ");
-	void* ret = malloc_brain(size, &(g_mem.large), LARGE);
+	else
+	{
+		ret = malloc_brain(size, &(g_mem.large), LARGE);
+	}
 	/*ft_putstr("malloc large ");
 	  ft_putnbr((int)ret);
 	  ft_putchar('\n');*/
+	pthread_mutex_unlock(&g_mutex);
 	return ret;
 }

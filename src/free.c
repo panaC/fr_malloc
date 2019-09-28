@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 15:09:38 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 23:02:21 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:18:23 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,26 +108,29 @@ void			free(void *ptr)
 	ft_putchar('\n');*/
 	t_alloc		*find;
 
-	if (ptr != NULL)
+	pthread_mutex_lock(&g_mutex);
+	while (ptr != NULL)
 	{
 		find = (t_alloc*)(ptr - sizeof(t_alloc));
 		if (find_and_delete_zone(&g_mem.large, find))
 		{
 			// printf("large\n");
-			return ;
+			break;
 		}
 		else if (find_and_delete_zone(&g_mem.small, find))
 		{
 			// printf("small\n");
-			return ;
+			break;
 		}
 		else if (find_and_delete_zone(&g_mem.tiny, find))
 		{
 			// printf("tiny\n");
-			return ;
+			break;
 		}
 		// printf("FREE: NOT FOUND\n");
 		errno = FREE_ERROR;
+		break;
 	}
+	pthread_mutex_unlock(&g_mutex);
 	//	write(1, "FREE OUT\n", strlen("FREE_OUT\n"));
 }
