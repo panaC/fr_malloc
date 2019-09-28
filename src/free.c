@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 15:09:38 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 23:24:43 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:50:15 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,8 @@ void			delete_zone(t_zone **head, t_zone *zone)
 			}
 			else
 				*head = l->next;
-			// printf("FREE: zone %p : %lu\n", (void*)l, l->length + sizeof(t_zone));
 			if (munmap((void*)l, l->length + sizeof(t_zone)) < 0)
-			{
-				// printf("ERROR to free %lu bytes of memory\n",
-				// 		l->length + sizeof(t_zone));
-			}
-			// printf("%s\n", strerror(errno));
+				return ;
 			return ;
 		}
 		previous = l;
@@ -88,7 +83,6 @@ int				find_and_delete_zone(t_zone **head_zone, t_alloc *find)
 		total = 0;
 		if (find_and_delete_alloc((t_alloc*)(zone + 1), find, &total))
 		{
-			// printf("FREE: total %d\n", total);
 			if (total == 0)
 				delete_zone(head_zone, zone);
 			return (TRUE);
@@ -100,10 +94,6 @@ int				find_and_delete_zone(t_zone **head_zone, t_alloc *find)
 
 void			free(void *ptr)
 {
-	/*
-	ft_putstr("free ");
-	ft_putnbr((int)ptr);
-	ft_putchar('\n');*/
 	t_alloc		*find;
 
 	pthread_mutex_lock(&g_mutex);
@@ -112,23 +102,18 @@ void			free(void *ptr)
 		find = (t_alloc*)(ptr - sizeof(t_alloc));
 		if (find_and_delete_zone(&g_mem.large, find))
 		{
-			// printf("large\n");
-			break;
+			break ;
 		}
 		else if (find_and_delete_zone(&g_mem.small, find))
 		{
-			// printf("small\n");
-			break;
+			break ;
 		}
 		else if (find_and_delete_zone(&g_mem.tiny, find))
 		{
-			// printf("tiny\n");
-			break;
+			break ;
 		}
-		// printf("FREE: NOT FOUND\n");
 		errno = FREE_ERROR;
-		break;
+		break ;
 	}
 	pthread_mutex_unlock(&g_mutex);
-	//	write(1, "FREE OUT\n", strlen("FREE_OUT\n"));
 }

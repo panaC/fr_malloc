@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 21:40:22 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 23:08:41 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/29 00:10:50 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 # include <stdlib.h>
 # include <pthread.h>
 
-/**
- ** https://cocoawithlove.com/2010/05/look-at-how-malloc-works-on-mac.html
-**/
+/*
+** https://cocoawithlove.com/2010/05/look-at-how-malloc-works-on-mac.html
+*/
 
 # define MIN_ALLOC						100
 # define MUL_ALLOC						32
@@ -46,6 +46,9 @@ typedef struct							s_mem {
 	t_zone								*small;
 	t_zone								*large;
 }										t_mem;
+
+# define SZ								sizeof(t_zone)
+# define SA								sizeof(t_alloc)
 
 extern t_mem							g_mem;
 extern pthread_mutex_t					g_mutex;

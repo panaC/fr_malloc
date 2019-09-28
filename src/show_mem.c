@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 18:15:06 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 23:43:17 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:49:38 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ void				show_zone(t_zone *zone, t_uint64 *total)
 		if (alloc->length)
 		{
 			ft_putstr("0x");
-			ft_putstr(ft_itoa_base_long((t_uint64)(alloc + 1), "0123456789ABCDEF"));
+			ft_putstr(ft_itoa_base_long(
+						(t_uint64)(alloc + 1),
+						"0123456789ABCDEF"));
 			ft_putstr(" - 0x");
 			ft_putstr(ft_itoa_base_long(
 						(t_uint64)((void*)(alloc + 1) + alloc->length),
