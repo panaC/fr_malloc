@@ -6,15 +6,16 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 19:14:44 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/27 22:00:12 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 20:15:17 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <sys/mman.h>
 #include <unistd.h>
 #include <errno.h>
-#include <ft_printf.h>
+#include <libft.h>
 #include "malloc.h"
 
 t_mem			g_mem = { .tiny = NULL, .small = NULL, .large = NULL};
@@ -57,7 +58,7 @@ t_zone			*new_zone(t_e_size enum_size, size_t size)
 	ft_bzero((void*)ret, size);
 	ret->length = size - sizeof(t_zone);
 	ret->next = NULL;
-	ft_printf("new zone %x : %d : %x\n", ret, size, ret->next);
+	// printf("new zone %p : %zu : %p\n", ret, size, ret->next);
 	return (ret);
 }
 
@@ -71,7 +72,7 @@ t_alloc			*get_set_alloc_zone(t_zone *zone, size_t size)
 		tmp = (t_alloc*)((void*)zone + sizeof(t_zone));
 		tmp_end = (t_alloc*)((void*)tmp + sizeof(t_alloc) + tmp->length);
 
-		// ft_printf("   tmp %#018x : tmp_end %#018x\n", tmp, tmp_end);
+		// printf("   tmp %#018x : tmp_end %#018x\n", tmp, tmp_end);
 		while (tmp->next)
 		{
 			if ((void*)tmp->next - (void*)tmp_end > (long)size)
@@ -111,26 +112,41 @@ void			*malloc_brain(size_t size, t_zone **head, t_e_size e_size)
 			zone = push_back_zone(head, new_zone(e_size, size));
 			if (!zone)
 				return (NULL);
-			 ft_printf("new page requested for %d enum\n", e_size);
+			 // printf("new page requested for %d enum\n", e_size);
 		}
-	 	ft_printf("zone %#018x : length %d : next %#018x\n", zone, zone->length, zone->next);
+	 	// printf("zone %p : length %zu : next %p\n", zone, zone->length, zone->next);
 	}
-	 ft_printf("new node %#018x : length %d : next %#018x : content %#018x\n", tmp, tmp->length, tmp->next, (void*)tmp + sizeof(t_alloc));
+	 // printf("new node %p : length %zu : next %p : content %p\n", tmp, tmp->length, tmp->next, (void*)tmp + sizeof(t_alloc));
 	return ((void*)tmp + sizeof(t_alloc));
 }
 
-void			*ft_malloc(size_t size)
+void			*malloc(size_t size)
 {
+	ft_putstr("malloc ");
+	ft_putnbr(size);
+	ft_putchar('\n');
 	if (size < (size_t)(getpagesize() / MIN_ALLOC))
 	{
-		// ft_printf("TINY\n");
-		return (malloc_brain(size, &(g_mem.tiny), TINY));
+		// printf("TINY\n");
+		void* ret = malloc_brain(size, &(g_mem.tiny), TINY);
+	ft_putstr("malloc tiny ");
+	ft_putnbr((int)ret);
+	ft_putchar('\n');
+	return ret;
 	}
 	else if (size < (size_t)(MUL_ALLOC * getpagesize() / MIN_ALLOC))
 	{
-		// ft_printf("SMALL\n");
-	 	return (malloc_brain(size, &(g_mem.small), SMALL));
+	 	void* ret = malloc_brain(size, &(g_mem.small), SMALL);
+		// printf("SMALL\n");
+	ft_putstr("malloc small ");
+	ft_putnbr((int)ret);
+	ft_putchar('\n');
+	return ret;
 	}
-	// ft_printf("LARGE ");
-	return (malloc_brain(size, &(g_mem.large), LARGE));
+	// printf("LARGE ");
+	void* ret = malloc_brain(size, &(g_mem.large), LARGE);
+	ft_putstr("malloc large ");
+	ft_putnbr((int)ret);
+	ft_putchar('\n');
+	return ret;
 }

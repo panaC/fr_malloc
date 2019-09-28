@@ -6,13 +6,14 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 15:09:38 by pleroux           #+#    #+#             */
-/*   Updated: 2019/07/27 21:58:36 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 20:20:49 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 #include <sys/mman.h>
-#include <ft_printf.h>
 #include <libft.h>
 #include <errno.h>
 #include "malloc.h"
@@ -64,13 +65,13 @@ void			delete_zone(t_zone **head, t_zone *zone)
 			}
 			else
 				*head = l->next;
-			ft_printf("FREE: zone %x : %d\n", (void*)l, l->length + sizeof(t_zone));
+			// printf("FREE: zone %p : %lu\n", (void*)l, l->length + sizeof(t_zone));
 			if (munmap((void*)l, l->length + sizeof(t_zone)) < 0)
 			{
-				ft_printf("ERROR to free %d bytes of memory\n",
-						l->length + sizeof(t_zone));
+				// printf("ERROR to free %lu bytes of memory\n",
+				// 		l->length + sizeof(t_zone));
 			}
-			ft_printf("%s\n", strerror(errno));
+			// printf("%s\n", strerror(errno));
 			return ;
 		}
 		previous = l;
@@ -89,7 +90,7 @@ int				find_and_delete_zone(t_zone **head_zone, t_alloc *find)
 		total = 0;
 		if (find_and_delete_alloc((t_alloc*)(zone + 1), find, &total))
 		{
-			ft_printf("FREE: total %d\n", total);
+			// printf("FREE: total %d\n", total);
 			if (total == 0)
 				delete_zone(head_zone, zone);
 			return (TRUE);
@@ -99,8 +100,11 @@ int				find_and_delete_zone(t_zone **head_zone, t_alloc *find)
 	return (FALSE);
 }
 
-void			ft_free(void *ptr)
+void			free(void *ptr)
 {
+	ft_putstr("free ");
+	ft_putnbr((int)ptr);
+	ft_putchar('\n');
 	t_alloc		*find;
 
 	if (ptr != NULL)
@@ -108,20 +112,21 @@ void			ft_free(void *ptr)
 		find = (t_alloc*)(ptr - sizeof(t_alloc));
 		if (find_and_delete_zone(&g_mem.large, find))
 		{
-			// ft_printf("large\n");
+			// printf("large\n");
 			return ;
 		}
 		else if (find_and_delete_zone(&g_mem.small, find))
 		{
-			// ft_printf("small\n");
+			// printf("small\n");
 			return ;
 		}
 		else if (find_and_delete_zone(&g_mem.tiny, find))
 		{
-			// ft_printf("tiny\n");
+			// printf("tiny\n");
 			return ;
 		}
-		ft_printf("FREE: NOT FOUND\n");
+		// printf("FREE: NOT FOUND\n");
 		errno = FREE_ERROR;
 	}
+	write(1, "FREE OUT\n", strlen("FREE_OUT\n"));
 }
