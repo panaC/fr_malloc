@@ -6,11 +6,11 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 18:15:06 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 21:25:59 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:05:05 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include <ft_printf.h>
 #include <libft.h>
 #include "malloc.h"
 
@@ -24,8 +24,17 @@ void				show_zone(t_zone *zone, t_uint64 *total)
 	while (alloc)
 	{
 		if (alloc->length)
-			printf("%p - %p : %zu octets\n", alloc + 1, \
-					(void*)(alloc + 1) + alloc->length, alloc->length);
+		{
+			ft_putstr("0x");
+			ft_putstr(ft_itoa_base_long((t_uint64)(alloc + 1), "0123456789ABCDEF"));
+			ft_putstr(" - 0x");
+			ft_putstr(ft_itoa_base_long(
+						(t_uint64)((void*)(alloc + 1) + alloc->length),
+						"0123456789ABCDEF"));
+			ft_putstr(" : ");
+			ft_putnbr(alloc->length);
+			ft_putendl(" octets");
+		}
 		*total += alloc->length;
 		alloc = alloc->next;
 	}
@@ -35,7 +44,9 @@ void				show_all_zone(t_zone *zone, char *name, t_uint64 *total)
 {
 	if (!zone)
 		return ;
-	printf("%s : %p\n", name, zone);
+	ft_putstr(name);
+	ft_putstr(" : 0x");
+	ft_putendl(ft_itoa_base_long((t_uint64)zone, "0123456789ABCDEF"));
 	while (zone)
 	{
 		show_zone(zone, total);
@@ -51,5 +62,7 @@ void				show_alloc_mem(void)
 	show_all_zone(g_mem.tiny, "TINY", &total);
 	show_all_zone(g_mem.small, "SMALL", &total);
 	show_all_zone(g_mem.large, "LARGE", &total);
-	printf("Total : %ld octets\n", total);
+	ft_putstr("Total : ");
+	ft_putnbr(total);
+	ft_putendl(" octets");
 }

@@ -6,12 +6,12 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/20 19:14:44 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 20:15:17 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:01:56 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
+// #include <stdlib.h>
+// #include <stdio.h>
 #include <sys/mman.h>
 #include <unistd.h>
 #include <errno.h>
@@ -122,31 +122,31 @@ void			*malloc_brain(size_t size, t_zone **head, t_e_size e_size)
 
 void			*malloc(size_t size)
 {
-	ft_putstr("malloc ");
-	ft_putnbr(size);
-	ft_putchar('\n');
+	/*	ft_putstr("malloc ");
+		ft_putnbr(size);
+		ft_putchar('\n');*/
 	if (size < (size_t)(getpagesize() / MIN_ALLOC))
 	{
 		// printf("TINY\n");
 		void* ret = malloc_brain(size, &(g_mem.tiny), TINY);
-	ft_putstr("malloc tiny ");
-	ft_putnbr((int)ret);
-	ft_putchar('\n');
-	return ret;
+		/*ft_putstr("malloc tiny ");
+		  ft_putnbr((int)ret);
+		  ft_putchar('\n');*/
+		return ret;
 	}
 	else if (size < (size_t)(MUL_ALLOC * getpagesize() / MIN_ALLOC))
 	{
-	 	void* ret = malloc_brain(size, &(g_mem.small), SMALL);
+		void* ret = malloc_brain(size, &(g_mem.small), SMALL);
 		// printf("SMALL\n");
-	ft_putstr("malloc small ");
-	ft_putnbr((int)ret);
-	ft_putchar('\n');
-	return ret;
+		/*ft_putstr("malloc small ");
+		  ft_putnbr((int)ret);
+		  ft_putchar('\n');*/
+		return ret;
 	}
 	// printf("LARGE ");
 	void* ret = malloc_brain(size, &(g_mem.large), LARGE);
-	ft_putstr("malloc large ");
-	ft_putnbr((int)ret);
-	ft_putchar('\n');
+	/*ft_putstr("malloc large ");
+	  ft_putnbr((int)ret);
+	  ft_putchar('\n');*/
 	return ret;
 }

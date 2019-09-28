@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/21 15:09:38 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 20:20:49 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:02:21 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,10 @@ int				find_and_delete_zone(t_zone **head_zone, t_alloc *find)
 
 void			free(void *ptr)
 {
+	/*
 	ft_putstr("free ");
 	ft_putnbr((int)ptr);
-	ft_putchar('\n');
+	ft_putchar('\n');*/
 	t_alloc		*find;
 
 	if (ptr != NULL)
@@ -128,5 +129,5 @@ void			free(void *ptr)
 		// printf("FREE: NOT FOUND\n");
 		errno = FREE_ERROR;
 	}
-	write(1, "FREE OUT\n", strlen("FREE_OUT\n"));
+	//	write(1, "FREE OUT\n", strlen("FREE_OUT\n"));
 }
