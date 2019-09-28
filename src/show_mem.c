@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 18:15:06 by pleroux           #+#    #+#             */
-/*   Updated: 2019/09/28 23:25:04 by pleroux          ###   ########.fr       */
+/*   Updated: 2019/09/28 23:43:17 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ void				show_alloc_mem(void)
 {
 	t_uint64		total;
 
-	pthread_mutex_lock(&g_mutex);
 	total = 0;
 	show_all_zone(g_mem.tiny, "TINY", &total);
 	show_all_zone(g_mem.small, "SMALL", &total);
 	show_all_zone(g_mem.large, "LARGE", &total);
+	pthread_mutex_lock(&g_mutex);
 	ft_putstr("Total : ");
 	ft_putnbr(total);
 	ft_putendl(" octets");
